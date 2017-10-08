@@ -32,24 +32,31 @@ exports.recursionAnswers = {
   },
 
   permute: function(arr) {
-    // let results = [];
+    let temp = [];
+    let answer = [];
 
-    // for (i in arr) {
-    //   for (let j = 0; j < (arr.length - 1) * 2; j++) {
-    //     if (j & 1) {
-    //       arr = [arr[0], arr[2], arr[1], arr[3]];
-    //     } else {
-    //       arr = [arr[0], arr[1], arr[3], arr[2]];
-    //     }
+    function permute() {
+      let item;
 
-    //     results.push(arr);
+      for (let i = 0; i < arr.length; i++) {
+        item = arr.splice(i, 1)[0];
 
-    //     if (j === 5) arr = [arr[Number(i)]]
-    //   }
-    // }
+        temp.push(item);
 
-    // console.log(results);
-    // return results;
+        if (arr.length) {
+          permute();
+        } else {
+          answer.push(temp.slice());
+        }
+
+        arr.splice(i, 0, item);
+        temp.pop();
+      }
+
+      return answer;
+    }
+
+    return permute();
   },
 
   fibonacci: function(n) {
@@ -68,6 +75,25 @@ exports.recursionAnswers = {
   },
 
   validParentheses: function(n) {
+    function nPair(n) {
+      let result = [];
 
+      if (n == 0) return [''];
+  
+      for (let i = 0; i < n; ++i) {
+        let lefts = nPair(i);
+        let rights = nPair(n - i - 1);
+
+        for (let l = 0; l < lefts.length; ++l) {
+          for (let r = 0; r < rights.length; ++r) {
+            result.push("(" + lefts[l] + ")" + rights[r]);
+          }
+        }
+      }
+  
+      return result;
+    }
+
+    return nPair(n);
   }
 };

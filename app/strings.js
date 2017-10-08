@@ -22,50 +22,22 @@ exports.stringsAnswers = {
   },
 
   wordWrap: function(str, cols) {
-    // console.log(str.charAt(cols));
-    let [...arr] = str;
-    let spaces = [];
-    let space = 0;
+    let arr = str.split(' ');
+    let colCount = 0; // запоминает длину всех предыдущих слов и пробелов, не образовавших колонку
+    let result = arr.map((item, i) => {
+      if (i === arr.length - 1) return item;
 
-    while (true) {
-      space = str.indexOf(' ', space + 1);
+      colCount += item.length + 1;
 
-      if (space === -1) break;
-
-      spaces.push(space);
-      space += 1;
-    }
-console.log('spaces', spaces)
-    for (i in spaces) {
-      i = Number(i);
-
-      console.log(cols, spaces[i], cols - spaces[i])
-      console.log(cols, spaces[i+1], spaces[i+1] - cols, cols - spaces[i] < spaces[i + 1] - cols)
-
-      if (spaces[i] > cols || cols - spaces[i] < spaces[i + 1] - cols ) {
-        // console.log(spaces[i + 1] - cols, cols - spaces[i] <= spaces[i + 1] - cols)
-        arr[spaces[i]] = '\n';
+      if (item.length >= cols || colCount >= cols || item.length + arr[i+1].length + 1 >= cols) {
+        colCount = 0;
+        return item + '\n';
       } else {
-        arr[spaces[i + 1]] = '\n';
+        return item + ' ';
       }
-    }
+    });
 
-    console.log(arr.join(''));
-    return arr.join('');
-    // if (str.charAt(cols) !== ' ')
- 
-    // 12345-
-    // abcdef
-    // abcde
-    // abc
-    // def
-  
-    // abc
-    // abc
-    // abc
-  
-    // a b c
-    // def
+    return result.join('');
   },
 
   reverseString: function(str) {
